@@ -382,15 +382,16 @@ namespace CampBackend.Data
         {
             using var connection = new MySqlConnection(_connectionString);
             connection.Open();
-            string query = "UPDATE campsite SET Name = @Name, Description = @Description, PricePerNight=@PricePerNight, Status = @status WHERE Id = @Id";
+            string query = "UPDATE campsite SET Name = @Name, Description = @Description, PricePerNight = @PricePerNight, Status = @Status WHERE Id = @Id";
             using var cmd = new MySqlCommand(query, connection);
             cmd.Parameters.AddWithValue("@Name", updatedCampsite.Name);
             cmd.Parameters.AddWithValue("@Description", updatedCampsite.Description);
             cmd.Parameters.AddWithValue("@PricePerNight", updatedCampsite.Price);
-            cmd.Parameters.AddWithValue("@status", updatedCampsite.status);
+            cmd.Parameters.AddWithValue("@Status", updatedCampsite.status);
             cmd.Parameters.AddWithValue("@Id", updatedCampsite.Id);
             cmd.ExecuteNonQuery();
         }
+
 
         public void DeleteCampsite(int id)
         {

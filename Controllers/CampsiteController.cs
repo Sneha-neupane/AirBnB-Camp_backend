@@ -2,15 +2,15 @@
 using CampBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Collections.Generic;
 
 namespace CampBackend.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CampsiteController: ControllerBase
+    public class CampsiteController : ControllerBase
     {
-        private DataContext _data;
+        private readonly DataContext _data;
 
         public CampsiteController()
         {
@@ -18,21 +18,17 @@ namespace CampBackend.Controllers
             _data = new DataContext(connectionString);
         }
 
-
         [HttpGet]
         public ActionResult<IEnumerable<Campsite>> Get()
         {
             return Ok(_data.GetCampsite());
-
         }
 
         [HttpPost]
-        
         [Authorize(Policy = "BasicAuthentication")]
         public ActionResult Post([FromBody] Campsite campsite)
         {
             _data.AddCampsites(campsite);
-            
             return Ok("Campsite was added!");
         }
 
@@ -48,9 +44,23 @@ namespace CampBackend.Controllers
         [Authorize(Policy = "BasicAuthentication")]
         public ActionResult Put(int id, [FromBody] Campsite updatedCampsite)
         {
-            Campsite changeStatus = _data.GetCampsite(id);
-            if (changeStatus == null) return NotFound("campsite not found");
-            return Ok("campsite updated");
+            // Ensure the IDs match
+            if (id != updatedCampsite.Id)
+            {
+                return BadRequest("Campsite ID mismatch");
+            }
+
+            // Check if the campsite exists
+            Campsite existingCampsite = _data.GetCampsite(id);
+            if (existingCampsite == null)
+            {
+                return NotFound("Campsite not found");
+            }
+
+            // Update the campsite
+            _data.UpdateCampsite(id, updatedCampsite);
+
+            return Ok("Campsite updated");
         }
 
         [HttpDelete("{id}")]
