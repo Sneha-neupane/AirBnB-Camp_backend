@@ -12,15 +12,15 @@ namespace CampBackend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            
             builder.Services.AddScoped(typeof(DataBase), typeof(DataList));
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+           
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddSingleton(typeof(DataBase), typeof(DataList));
 
-            //adjust ConfigureServices-method
+            
             builder.Services.AddCors(s => s.AddPolicy("MyPolicy", builder => builder.WithOrigins("http://localhost:8080")
                                                .AllowAnyMethod()
                                                .AllowAnyHeader()
@@ -28,8 +28,7 @@ namespace CampBackend
             
 
 
-            //adjust Configure-method 
-            //place this BEFORE the mapping of the endpoints and before use of authorization
+            
 
             //ConfigureServices
             builder.Services
@@ -55,7 +54,7 @@ namespace CampBackend
             }
             app.UseCors("MyPolicy");
 
-            //Configure in Startup.cs
+            
             app.UseHttpsRedirection();
 
 

@@ -15,7 +15,7 @@ namespace CampBackend.Controllers
 
 
         private DataContext _data;
-        private readonly string _connectionString;
+        
         public CampingAmenityController()
         {
             string connectionString = "server=localhost;port=3306;user=root;password=root;database=airbnb";

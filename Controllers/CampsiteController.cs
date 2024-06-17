@@ -44,13 +44,13 @@ namespace CampBackend.Controllers
         [Authorize(Policy = "BasicAuthentication")]
         public ActionResult Put(int id, [FromBody] Campsite updatedCampsite)
         {
-            // Ensure the IDs match
+            
             if (id != updatedCampsite.Id)
             {
                 return BadRequest("Campsite ID mismatch");
             }
 
-            // Check if the campsite exists
+            
             Campsite existingCampsite = _data.GetCampsite(id);
             if (existingCampsite == null)
             {
